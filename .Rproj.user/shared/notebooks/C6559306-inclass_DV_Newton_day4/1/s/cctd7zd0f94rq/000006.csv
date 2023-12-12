@@ -1,0 +1,3 @@
+"0","vids$publish_when <- sapply(X = vids$publish_hour,FUN = convert_hour)"
+"0",""
+"0","head(vids)"

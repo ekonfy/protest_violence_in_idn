@@ -1,0 +1,3 @@
+"0","ggplot(vids.agt, aes(x = dislike_ratio, y = like_ratio)) +"
+"0","  geom_jitter(aes(size = views, col = likes)) +"
+"0","  facet_wrap(publish_day ~ category_id)"

@@ -1,0 +1,3 @@
+"0","# versi dplyr"
+"0",""
+"0","head(select(vids, publish_wday, comment_count, views))"

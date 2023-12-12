@@ -1,0 +1,6 @@
+"0","# daniel kurnia"
+"0","aggr <- aggregate(views~category_id,data=vids.unik,FUN=mean)"
+"0","ggplot(data=aggr, mapping=aes(x=views, y=reorder(category_id,views)))+"
+"0","  geom_col(fill = ""blue"")+"
+"0","  geom_text(aes(label=floor(views)),hjust=1)"
+"0",""

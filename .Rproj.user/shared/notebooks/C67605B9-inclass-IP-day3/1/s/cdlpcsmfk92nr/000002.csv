@@ -1,0 +1,3 @@
+"0","data_attrition <- read_csv(file = ""data-input/data-attrition.csv"")"
+"0",""
+"0","head(data_attrition)"

@@ -1,0 +1,4 @@
+"0","# cara remove column"
+"0",""
+"0","iris %>% "
+"0","  select(-c(Petal.Length, Sepal.Length))"

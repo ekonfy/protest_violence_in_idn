@@ -1,0 +1,6 @@
+"0","vids %>% "
+"0","  group_by(category_id) %>% "
+"0","  summarise(total_views = sum(views)) %>% "
+"0","  top_n(total_views, n = 10) %>% "
+"0","  ggplot(aes(y = reorder(category_id, total_views), x = total_views)) +"
+"0","  geom_col()"

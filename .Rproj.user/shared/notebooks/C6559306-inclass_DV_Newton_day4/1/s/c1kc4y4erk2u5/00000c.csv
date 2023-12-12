@@ -1,0 +1,5 @@
+"0","# tabulasi jumlah trending video per kategori berdasarkan tanggal"
+"0","vids.ces <- as.data.frame(table(vids.ces$trending_date,vids.ces$category_id))"
+"0","# ubah nama data frame"
+"0","vids.ces <- setNames(vids.ces,c(""trending_date"",""category"",""freq""))"
+"0","vids.ces"

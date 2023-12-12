@@ -1,0 +1,4 @@
+"0","ggplot(data = vids.big, "
+"0","       mapping = aes(x = category_id,y = like_ratio)) +"
+"0","  geom_jitter(aes(size = dislike_ratio, color = like_ratio)) +"
+"0","  geom_point(aes(color = dislike_ratio))"

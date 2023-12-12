@@ -1,0 +1,4 @@
+"0","ggplot(vids_long,aes(x= value, y = reorder(category,value))) +"
+"0","  geom_col(aes(fill = name),position = ""dodge"") +"
+"0","  scale_fill_manual(values = c(""blue"",""firebrick4"")) +"
+"0","  geom_text(aes(label = round(value,3)))"

@@ -1,0 +1,4 @@
+"0","library(tidyr)"
+"0",""
+"0","pivot_longer(data = vids.top.agg,cols = c(""like_ratio"",""dislike_ratio""),"
+"0","             names_to = ""ratio"",values_to = ""Nilai"")"

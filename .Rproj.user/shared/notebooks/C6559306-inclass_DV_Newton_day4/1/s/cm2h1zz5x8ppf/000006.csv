@@ -1,0 +1,2 @@
+"0","vids_wide <- pivot_wider(data = vids_long, names_from = name, values_from = value)"
+"0","vids_wide"

@@ -1,0 +1,1 @@
+"0","pivot_wider(data = vids_long,id_cols = category,names_from = name,values_from = value)"

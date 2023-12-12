@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in leave_house(get_dressed(take_a_bath(wake_up(me, time = \"8:00\")),  : \n  could not find function \"leave_house\"\n"}

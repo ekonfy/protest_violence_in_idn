@@ -1,0 +1,7 @@
+"0","# agregasi data"
+"0",""
+"0","data_agg <- data_attrition %>% "
+"0","  group_by(education_field) %>% "
+"0","  summarise(freq = n())"
+"0","  "
+"0","data_agg"

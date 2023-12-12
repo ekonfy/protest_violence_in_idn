@@ -1,0 +1,6 @@
+"0","# Base R"
+"0",""
+"0","vids$likesratio <- vids$likes/vids$views"
+"0","vids$commentratio <- vids$likes/vids$views"
+"0","vids$dislikeratio <- vids$likes/vids$views"
+"0","vids$likesratio <- vids$likes/vids$views"

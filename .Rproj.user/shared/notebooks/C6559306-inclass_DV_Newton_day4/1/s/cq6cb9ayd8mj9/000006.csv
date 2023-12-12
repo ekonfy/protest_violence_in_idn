@@ -1,0 +1,1 @@
+"0","ggplot(data = vids.big, mapping = aes(x = category_id,y = like_ratio))"

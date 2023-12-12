@@ -1,0 +1,2 @@
+"0","vids.agt$dislike_ratio <- vids.agt$dislikes/vids.agt$views"
+"0","vids.agt$category_id <- as.factor(vids.agt$category_id)"

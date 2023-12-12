@@ -1,0 +1,29 @@
+"0","vids <- read_csv(file = ""data-input/youtubetrends.csv"")"
+"0","glimpse(vids)"
+"1","Rows: 2,986"
+"1",""
+"1","
+"
+"1","Columns: 16"
+"1",""
+"1","
+"
+"1","$ trending_date          [3m[38;5;246m<date>[39m[23m 2017-11-14, 2017-11-14, 2017-11-14, 2017-11-14, 2017-11-14, 2017-11-14, 2017-11-14, 2017-11-14, 2017-11-14, 2017-11-14, 2~
+$ title                  [3m[38;5;246m<chr>[39m[23m ""WE WANT TO TALK ABOUT OUR MARRIAGE"", ""The Trump Presidency: Last Week Tonight with John Oliver (HBO)"", ""Racist Superman |~
+$ channel_title          [3m[38;5;246m<chr>[39m[23m ""CaseyNeistat"", ""LastWeekTonight"", ""Rudy Mancuso"", ""Good Mythical Morning"", ""nigahiga"", ""iJustine"", ""Saturday Night Live"",~
+$ category_id            [3m[38;5;246m<chr>[39m[23m ""People and Blogs"", ""Entertainment"", ""Comedy"", ""Entertainment"", ""Entertainment"", ""Science and Technology"", ""Entertainment""~
+$ publish_time           [3m[38;5;246m<dttm>[39m[23m 2017-11-13 12:13:01, 2017-11-13 02:30:00, 2017-11-12 14:05:24, 2017-11-13 06:00:04, 2017-11-12 13:01:41, 2017-11-13 14:07~
+$ views                  [3m[38;5;246m<dbl>[39m[23m 748374, 2418783, 3191434, 343168, 2095731, 119180, 2103417, 817732, 826059, 256426, 81377, 104578, 687582, 544770, 207532,~
+$ likes                  [3m[38;5;246m<dbl>[39m[23m 57527, 97185, 146033, 10172, 132235, 9763, 15993, 23663, 3543, 12654, 655, 1576, 114188, 7848, 7473, 9419, 8011, 5398, 119~
+$ dislikes               [3m[38;5;246m<dbl>[39m[23m 2966, 6146, 5339, 666, 1989, 511, 2445, 778, 119, 1363, 25, 303, 1333, 1171, 246, 52, 638, 53, 36, 191, 75, 138, 89, 578, ~
+$ comment_count          [3m[38;5;246m<dbl>[39m[23m 15954, 12703, 8181, 2146, 17518, 1434, 1970, 3432, 340, 2368, 177, 1279, 8371, 3981, 2120, 1230, 1256, 385, 2211, 1214, 28~
+$ comments_disabled      [3m[38;5;246m<lgl>[39m[23m FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FAL~
+$ ratings_disabled       [3m[38;5;246m<lgl>[39m[23m FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FAL~
+$ video_error_or_removed [3m[38;5;246m<lgl>[39m[23m FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FAL~
+$ publish_hour           [3m[38;5;246m<dbl>[39m[23m 12, 2, 14, 6, 13, 14, 0, 16, 9, 8, 21, 22, 12, 9, 13, 15, 12, 11, 10, 17, 9, 10, 11, 11, 9, 9, 7, 11, 10, 13, 20, 12, 12, ~
+$ publish_when           [3m[38;5;246m<chr>[39m[23m ""8am to 3pm"", ""12am to 8am"", ""8am to 3pm"", ""12am to 8am"", ""8am to 3pm"", ""8am to 3pm"", ""12am to 8am"", ""3pm to 12am"", ""8am t~
+$ publish_wday           [3m[38;5;246m<chr>[39m[23m ""Monday"", ""Monday"", ""Sunday"", ""Monday"", ""Sunday"", ""Monday"", ""Sunday"", ""Sunday"", ""Monday"", ""Monday"", ""Sunday"", ""Sunday"", ""M~
+$ timetotrend            [3m[38;5;246m<chr>[39m[23m ""1"", ""1"", ""2"", ""1"", ""2"", ""1"", ""2"", ""2"", ""1"", ""1"", ""1"", ""1"", ""1"", ""2"", ""2"", ""1"", ""2"", ""1"", ""1"", ""2"", ""1"", ""2"", ""1"", ""2"", ""1~"
+"1",""
+"1","
+"

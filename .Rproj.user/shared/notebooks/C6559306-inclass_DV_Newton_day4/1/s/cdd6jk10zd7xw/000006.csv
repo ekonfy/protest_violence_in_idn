@@ -1,0 +1,4 @@
+"0","df <- data.frame(nama = c(""Arga"", ""Arga"", ""Arga"", ""Sita"", ""Sita"", ""David""),"
+"0","           nilai = c(70,60, 50, 80, 50, 90))"
+"0",""
+"0","df"

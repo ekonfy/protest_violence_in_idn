@@ -1,0 +1,2 @@
+"0","ggplot(trend_channel, aes(x = Var1, Freq))+"
+"0","  geom_col()"

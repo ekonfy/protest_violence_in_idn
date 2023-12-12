@@ -1,0 +1,3 @@
+"0","# abline(h = mean(vids.agt$dislike_ratio))"
+"0","# abline(v = mean(vids.agt$like_ratio))"
+"0","abline(lm(dislike_ratio ~ like_ratio,data = vids.agt))"

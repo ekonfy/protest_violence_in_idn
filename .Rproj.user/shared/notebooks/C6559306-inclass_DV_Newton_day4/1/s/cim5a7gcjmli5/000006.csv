@@ -1,0 +1,3 @@
+"0","name <- unique(df$nama)"
+"0",""
+"0","df[match(name,df$nama),]"

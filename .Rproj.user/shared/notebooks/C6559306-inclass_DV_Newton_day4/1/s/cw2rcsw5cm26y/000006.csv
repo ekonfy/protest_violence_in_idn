@@ -1,0 +1,4 @@
+"0","aggregate.data.frame(x = list(rata_likes = vids.unik$likes,"
+"0","                              rata_dislikes = vids.unik$dislikes),"
+"0","                     by = list(category = vids.unik$category_id),"
+"0","                     FUN = mean)"

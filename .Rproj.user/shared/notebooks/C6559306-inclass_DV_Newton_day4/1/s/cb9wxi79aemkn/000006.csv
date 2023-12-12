@@ -1,0 +1,2 @@
+"0","ggplot(vids_wide,aes(x = like_ratio, y = category)) +"
+"0","  geom_col() "

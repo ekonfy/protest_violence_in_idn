@@ -1,0 +1,5 @@
+"0",""
+"0","vids %>% "
+"0","  arrange(desc(views)) %>% "
+"0","  select(title, views) %>% "
+"0","  head(5)"

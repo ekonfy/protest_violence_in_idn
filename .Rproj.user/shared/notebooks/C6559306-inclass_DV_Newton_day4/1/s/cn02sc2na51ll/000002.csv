@@ -1,0 +1,3 @@
+"0","vids_long2$category <- tidytext :: reorder_within(x = vids_long2$category, "
+"0","                                                  by = vids_long2$value,"
+"0","                                                  within = vids_long2$name)"

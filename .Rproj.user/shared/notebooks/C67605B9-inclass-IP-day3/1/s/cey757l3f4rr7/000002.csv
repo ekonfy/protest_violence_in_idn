@@ -1,0 +1,7 @@
+"0","# ggplot"
+"0",""
+"0","plot1 <- data_agg %>% "
+"0","  ggplot(aes(x = freq, y = reorder(education_field, freq))) +"
+"0","  geom_col()"
+"0",""
+"0","plot1"

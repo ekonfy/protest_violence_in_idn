@@ -1,0 +1,11 @@
+"0","plot_iris <- iris %>%"
+"0","  mutate(label = glue(""{species}"
+"0","    SP = {sepal_length}"
+"0","    PL = {petal_length}"")) %>%"
+"0","  ggplot(aes(x = petal_length, y = sepal_length, text = label)) +"
+"0","  geom_point()"
+"2","Error: Problem with `mutate()` input `label`.
+[31mx[39m object 'species' not found
+[34mi[39m Input `label` is `glue(""{species}\n    SP = {sepal_length}\n    PL = {petal_length}"")`.
+[90mRun `rlang::last_error()` to see where the error occurred.[39m
+"

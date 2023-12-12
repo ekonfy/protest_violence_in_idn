@@ -1,0 +1,4 @@
+"0","vids$publish_date <- date(vids$publish_time)"
+"0",""
+"0","vids$time_to_trend <- as.numeric(vids$trending_date - vids$publish_date)"
+"0","head(vids)"

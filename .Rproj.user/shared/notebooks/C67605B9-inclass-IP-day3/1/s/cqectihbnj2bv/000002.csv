@@ -1,0 +1,4 @@
+"0","vids %>% "
+"0","  arrange(desc(likes)) %>% "
+"0","  select(channel_title, likes) %>% "
+"0","  head(5) "

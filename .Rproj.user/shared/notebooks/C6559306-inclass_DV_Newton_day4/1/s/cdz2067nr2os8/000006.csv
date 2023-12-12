@@ -1,0 +1,3 @@
+"0","library(tidyr)"
+"0","vids_long <-  pivot_longer(data = vids.top.agg, cols = c(""like_ratio"",""dislike_ratio""))"
+"0","vids_long"

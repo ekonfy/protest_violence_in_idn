@@ -1,0 +1,3 @@
+"0","vids <- read.csv(""data_input/USvideos.csv"")"
+"0",""
+"0","head(vids)"

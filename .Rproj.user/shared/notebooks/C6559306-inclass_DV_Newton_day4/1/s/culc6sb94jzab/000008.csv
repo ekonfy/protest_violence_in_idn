@@ -1,0 +1,6 @@
+"0","#kalau ingin membiarkan leves kosong ada diplot "
+"0","ggplot(vids.ces,aes(x = likes, y = dislikes)) +"
+"0","  geom_point(aes(color = category_id)) +"
+"0","  scale_color_discrete(drop = F)"
+"2","Error in FUN(X[[i]], ...) : object 'likes' not found
+"

@@ -1,0 +1,5 @@
+"0","vids[ , c(""views"", ""likes"", ""dislikes"", ""comment_count"", ""publish_hour"")] <- "
+"0","  lapply(vids[ , c(""views"", ""likes"", ""dislikes"", ""comment_count"", ""publish_hour"")], "
+"0","       as.numeric )"
+"0",""
+"0","vids"

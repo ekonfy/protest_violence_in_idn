@@ -1,0 +1,6 @@
+"0","library(janitor)"
+"0",""
+"0","iris <- iris %>% "
+"0","  clean_names()"
+"0",""
+"0","iris"

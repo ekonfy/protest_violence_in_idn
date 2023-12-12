@@ -1,0 +1,6 @@
+"0","ggplot(data = vids.big, "
+"0","       mapping = aes(x = category_id,y = like_ratio,"
+"0","                     color = like_ratio,"
+"0","                     fill = category_id)) +"
+"0","  geom_boxplot() +"
+"0","  geom_jitter(aes(size = dislike_ratio)) "

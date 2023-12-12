@@ -1,0 +1,6 @@
+"0","ggplot(vids_long2,aes(x= value, y = reorder(category,value))) +"
+"0","  geom_col(aes(fill = name),position = ""dodge"", show.legend = F,width = 0.7) +"
+"0","  scale_fill_manual(values = c(""blue"",""firebrick4"")) +"
+"0","  geom_text(aes(label = round(value,3)),color = ""white"",hjust = 0.9,size = 3) +"
+"0","  facet_wrap(~name,scales = ""free"")+"
+"0","  tidytext::scale_y_reordered()"

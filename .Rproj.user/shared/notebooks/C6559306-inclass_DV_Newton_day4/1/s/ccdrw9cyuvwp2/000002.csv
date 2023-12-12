@@ -1,0 +1,8 @@
+"0","vids.agt$category_id <-  droplevels(vids.agt$category_id)"
+"0","levels(vids.agt$category_id)"
+"1","[1]"
+"1"," ""Autos and Vehicles"""
+"1"," ""Gaming""            "
+"1"," ""Travel and Events"" "
+"1","
+"

@@ -1,0 +1,4 @@
+"0","trend_channel <- as.data.frame(table(vids.unik$channel_title))"
+"0","trend_channel <- trend_channel[trend_channel$Freq >= 10, ]"
+"0","trend_channel <- trend_channel[order(trend_channel$Freq, decreasing = T), ]"
+"0","trend_channel"

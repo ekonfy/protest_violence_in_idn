@@ -1,0 +1,1 @@
+"0","plot(x = vids.agt$like_ratio, y = vids.agt$dislike_ratio)"

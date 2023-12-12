@@ -1,0 +1,6 @@
+"0","# agregasi dataaa"
+"0",""
+"0","data_agg <- data_attrition %>% "
+"0","  select(department, monthly_income, attrition)"
+"0",""
+"0","data_agg"

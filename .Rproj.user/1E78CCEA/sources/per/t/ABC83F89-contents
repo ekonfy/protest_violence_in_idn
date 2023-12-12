@@ -1,0 +1,827 @@
+---
+title: "Inclass IP"
+author: "Ahmad Husain"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: 
+        collapsed: true
+    number_sections: true
+    theme: flatly
+    highlight: zenburn
+    df_print: paged
+    css: assets/style.css
+  fig_caption: yes
+  pdf_document:
+    latex_engine: xelatex
+    fig_caption: yes
+params: 
+  year_input: 2018
+---
+
+# library & setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  error = TRUE,
+  message = FALSE,
+  fig.align = "center"
+)
+
+
+options(scipen = 9999)
+```
+
+```{r}
+# data wrangling (data pre-processing + eda)
+library(tidyverse)
+
+# visualisasi
+library(ggplot2)
+library(plotly)
+library(ggthemes)
+
+theme_set(theme_minimal())
+
+# beautify/tidying annotation graph
+library(glue)
+library(scales)
+```
+
+# data wrangling (basic dplyr)
+
+Kita perlu memastikan data Kita direpresentasikan dalam bentuk yang benar. Proses ini mungkin menghabiskan sebagian besar waktu, tetapi dengan mengetahui bentuk data yang Kita inginkan untuk dianalisis, dapat membantu Kita menghemat banyak waktu di masa mendatang.
+
+## Mengimpor data ke R
+
+menggunakan fungsi `read.csv()`
+
+
+```{r}
+vids <- read.csv(file = "data-input/youtubetrends.csv")
+str(vids)
+```
+
+Import data csv menggunakan fungsi `read_csv` dari package `readr`. Keunggulannya adalah: 
+
+* Kelas datanya sudah disesuaikan dengan sendirinya.
+
+Contoh: *Data-data yang tipenya date akan otomatis di transform menjadi date*
+
+```{r}
+vids <- read_csv(file = "data-input/youtubetrends.csv")
+glimpse(vids)
+```
+
+* `glimpse()`: untuk melihat struktur data dan sekilas informasi dari data. Output yang dihasilkan lebih rapi dibandingkan dengan ketika kita menggunakan `str()`.
+
+## Subsetting Column (`select`)
+
+1. dari data `vids` ambil kolom `publish_wday`, `comment_count`, dan `views`.
+
+```{r}
+# base R
+
+head(subset(vids, select = c('publish_wday','comment_count','views')))
+```
+
+```{r}
+head(vids[,c("publish_wday","comment_count","views")])
+```
+
+
+versi dplyr:
+
+```{r echo=FALSE}
+knitr::include_graphics(path = "img/dplyr.png")
+```
+
+* `select()`: untuk mengambil kolom yang ingin diamati.
+
+```{r}
+# versi dplyr
+
+head(select(vids, publish_wday, comment_count, views))
+```
+
+## Subsetting Row (`filter`)
+
+2. dari data vids lakukan subset baris yang memiliki jumlah views lebih dari 10jt
+
+```{r}
+# base R
+
+head(subset(vids, subset = vids$views >= 10000000))
+```
+
+```{r}
+head(vids[vids$views > 10000000,])
+```
+
+
+* `filter()`: untuk subsetting row dengan sebuah kondisi
+
+```{r}
+# versi dplyr
+
+head(filter(.data = vids, views > 10000000))
+```
+
+kondisi lebih dari 1:
+
+subset video yang memiliki views lebih dari 10jt dan dari category Music.
+
+```{r}
+vids[vids$views > 1e7 & vids$category_id == "Music",]
+```
+
+```{r}
+# dplyr
+
+filter(vids, views > 1e7, category_id == "Music")
+```
+
+
+## Konsep pipe (%>%)
+
+> Pada packages dplyr terdapat operasi pipe (%>%) yang mempermudah kita untuk melakukan proses (analisis data) yang berurutan. 
+
+```{r echo=FALSE}
+knitr::include_graphics(path = "img/pipe.png")
+```
+
+Analogi dari piping seperti ini: Sejak bangun tidak sampai menginggalkan rumah, kegiatan apa saja yang saya lakukan?
+
+*saya > bangun > mandi > pake baju > berangkat*
+
+```{r eval = TRUE}
+# tanpa pipe
+
+leave_house(get_dressed(take_a_bath(wake_up(me, time = "8:00")), pants = TRUE, shirt = TRUE),
+            motor = TRUE)
+```
+
+* shortcut pipe windows: ctrl + shift + m
+* mac: shift + command + m
+
+
+```{r eval = FALSE}
+# dengan pipe
+
+me %>%
+  wake_up(time = "8:00") %>%
+  take_a_bath() %>%
+  get_dressed(pants = TRUE, shirth = TRUE) %>%
+  leave_house(motor = TRUE)
+```
+
+
+```{r}
+head(filter(.data = vids, views > 10000000))
+
+vids %>% 
+  filter(views > 1e7) %>% 
+  head()
+```
+
+
+
+
+
+Dive Deeper:
+
+3. Tampilkan channel title yang memiliki jumlah views lebih dari 10jt, kemudian pilih kolom channel title, views, dan likes-nya.
+
+```{r}
+# solusi dengan base R
+
+vids[vids$views>1e7,c('channel_title','views','likes')]
+
+
+```
+
+```{r}
+# solusi dengan dplyr + piping
+
+vids %>% 
+  filter(views > 1e7) %>% 
+  select(channel_title, views, likes)
+
+vids %>% 
+  filter(views > 1e7) %>% 
+  select(channel_title, views, likes)
+
+```
+```{r}
+vids %>% 
+  select(channel_title, views, likes) %>% 
+  filter(views > 1e7)
+
+```
+
+contoh subset column dengan index: 
+
+```{r}
+vids %>% 
+  select(1:5, 9)
+```
+
+
+subset baris dengan informasi index:
+
+```{r}
+vids %>% 
+  slice(4:7, 10)
+```
+
+ 
+## `mutate()`
+
+Dive deeper:
+
+4. Dari data `vids` buatlkah kolom baru dengan nama `likesratio` dari hasil likes/views
+
+```{r}
+# Base R
+
+vids$likesratio <- vids$likes/vids$views
+vids$commentratio <- vids$likes/vids$views
+vids$dislikeratio <- vids$likes/vids$views
+vids$likesratio <- vids$likes/vids$views
+```
+
+* `mutate()`: untuk manipulasi kolom (menambah atau merubah kolom yang sudah ada). Bisa mengubah tipe data, atau menambahkan kolom baru. 
+
+formula `mutate` = `mutate(namakolombaru = kondisinya)`
+
+```{r}
+# dplyr
+
+temp1 <- vids %>% 
+  mutate(likesratio = likes/views,
+         commentratio = comment_count/views,
+         dislikesratio = dislikes/views,
+         likesratio = round(likesratio, 3)) %>% 
+  head(7) %>% 
+  select(title, likesratio, commentratio, dislikesratio)
+
+temp1
+```
+
+cara untuk melakukan fungsi modifikasi kolumn secara bersamaan (`mutate_if`)
+
+```{r}
+temp1 %>% 
+  mutate_if(is.numeric, ~round(., digits = 3))
+```
+
+keterangan: 
+
+gunakan tanda tilde (~) ketika menambahkan argumen di dalam fungsinya. contoh:
+
+~round(., digit = ....)
+
+```{r}
+mtcars %>% 
+  mutate_if(is.numeric, as.factor)
+```
+
+
+
+## Agregasi Data `group_by()` & `summarise()`
+
+Dive deeper:
+
+5. Tampilkan rata-rata `likesratio` (like/views) berdasarkan masing-masing `category_id`
+
+```{r}
+# Base R
+
+aggregate(vids$likesratio, FUN = mean, by = list(vids$category_id))
+```
+
+* `group_by()`: untuk grouping kolom tertentu
+* `summarise()`: untuk memperoleh summary statistik untuk kolom yang sudah di grouping.
+
+```{r}
+# dplyr
+
+vids %>% 
+  group_by(category_id) %>% 
+  summarise(mean_likesratio = mean(likesratio),
+            jumlah_views = sum(views),
+            max_comment = max(comment_count))
+```
+
+_**Apa beda nya summarise dengan mutate?**_
+
+sederhananya, `summarise()` menghasilkan dataframe (column dan row) baru dengan satu nilai tunggal untuk setiap variabel kategorikal yang di grouping. Tidak mungkin ada kondisi variabel kategorikal tersebut terduplikasi.
+
+
+Sedangkan `mutate()` tidak merubah jumlah observasi, hanya manipulasi kolom dan nilai yang dihasilkan akan terduplikasi. Perhatikan kolom `mean_likesratio` untuk category *Entertainment* memiliki nilai yang sama.
+
+```{r}
+vids %>% 
+  mutate(likesratio = likes/views) %>%
+  group_by(category_id) %>% 
+  mutate(mean_likesratio = mean(likesratio)) %>% 
+  select(category_id, mean_likesratio) %>% 
+  head(10)
+```
+
+## Mengurutkan data `arrange()`
+
+* `arrange()`: defaultnya akan mengurutkan dari yang terendah ke tertinggi.
+
+
+Dive deeper:
+
+6. Ambil 5 video dengan views terbanyak. Tampilkan judul dan total viewsnya.
+
+- arrange
+- select
+- head/slice
+
+```{r}
+# base R
+
+dive6 <- head(vids[order(vids$views,decreasing = T),])
+dive6[,c("title","views")]
+```
+
+```{r}
+# versi dplyr
+
+vids %>% 
+  select(title, views) %>% 
+  arrange(desc(views)) %>% 
+  head(5)
+```
+
+```{r}
+vids %>% 
+  select(title, views) %>% 
+  arrange(-views) %>% 
+  head(5)
+```
+
+
+
+```{r}
+
+vids %>% 
+  arrange(desc(views)) %>% 
+  select(title, views) %>% 
+  head(5)
+```
+
+```{r}
+vids %>% 
+  top_n(views, n = 5) %>% 
+  select(title, views)
+```
+
+
+```{r}
+# cara remove column
+
+iris %>% 
+  select(-c(Petal.Length, Sepal.Length))
+```
+
+fungsi utama:
+
+- select
+- filter
+- mutate
+- arrange
+- group_by sumarise
+
+
+tambahan:
+
+- mutate_if
+- top_n
+
+
+# Interaktif visualisasi`plotly()`
+
+Seiring bertambahnya data dalam kompleksitas dan ukuran, sering kali tim analis diberi tugas yang sulit untuk menyeimbangkan _storytelling_ dengan hasil visualisasinya. Tim Analis juga ditugaskan untuk menemukan keseimbangan yang baik antara cakupan dan detail di bawah batasan grafik dan plot statis.
+
+Visualisasi interaktif adalah cara untuk mengatasi kendala ini, dan seperti yang akan kita lihat nanti, salah satu cara yang cukup berhasil. Mengutip dari penulis **superheat** Rebecca Barter, “Interaktivitas memungkinkan pengguna untuk terlibat dengan data Anda dengan cara yang tidak mungkin dilakukan oleh grafik statis. Dengan plot interaktif, pengguna dapat memperbesar area yang mereka minati, menyoroti poin data yang relevan bagi mereka, dan menyembunyikan informasi yang tidak relevan.”
+
+## dari `ggplot2` ke `ggplotly`
+
+Packages `plotly` adalah API dari R untuk visualisasi interaktif milik `plotly.js`. Library itu sendiri sangat dipuji dalam komunitas _data science_ karena kapabilitas dan fleksibilitasnya. Sebagai pengguna R, kita **dimudahkan** oleh satu fitur penting `plotly` untuk membuat plotting interaktif dari objek ggplot yaitu fungsi `ggplotly()`.
+
+**Studi kasus**:
+
+- Tampilkan top10 category id yang paling favorit berdasarkan jumlah views yang terbanyak.
+
+1. group_by(category_id)
+2. summarise(total_views = sum(views))
+3. arrange(desc(total_views))
+4. head(10)
+
+top_n: kita ingin ambil 5 video dengan likes paling tinggi
+
+
+```{r}
+vids %>% 
+  top_n(likes, n = 5) %>% 
+  select(channel_title, likes)
+```
+
+```{r}
+vids %>% 
+  arrange(desc(likes)) %>% 
+  select(channel_title, likes) %>% 
+  head(5) 
+```
+
+
+```{r}
+vids_favor <- vids %>% 
+                group_by(category_id) %>% 
+                summarise(total_views = sum(views)) %>% 
+                arrange(desc(total_views)) %>% 
+                head(10)
+
+vids_favor
+```
+
+
+
+
+```{r}
+vids %>% 
+  group_by(category_id) %>% 
+  summarise(total_views = sum(views)) %>% 
+  top_n(total_views, n = 10) %>% 
+  ggplot(aes(y = reorder(category_id, total_views), x = total_views)) +
+  geom_col()
+```
+
+
+```{r}
+library(scales)
+
+
+plot1 <- 
+  vids_favor %>% 
+  ggplot(aes(x = total_views, y = reorder(category_id, total_views))) +
+  geom_col(fill = "firebrick", alpha = 0.4) +
+  scale_x_continuous(breaks = seq(from = 0, to = 5e8, by = 5e7),
+                     labels = number_format(scale = 1e-6, suffix = " M"))
+
+plot1
+```
+
+```{r}
+ggplotly(plot1)
+```
+
+Kali ini, kita akan membuat satu buah kolom baru untuk informasi _mouse over hover text_ yang tujuannya jika cursor diarahkan ke tiap bar/poin/element lain, akan menampilkan informasi yang kita tentukan. Kita simpan informasi itu dengan nama kolom `label` dan perhatikan ketika Anda mengarahkan kursor ke masing-masing poin. 
+
+Kemudian kita simpan ke objek baru dengan nama `vids_favor2`
+
+```{r}
+vids_favor2 <- vids %>%
+  group_by(category_id) %>%
+  summarise(total_views = sum(views),
+            total_likes = sum(likes)) %>%
+  arrange(desc(total_views)) %>%
+  head(10) %>%
+  mutate(
+    label = glue(
+      "Category ID: {category_id}
+      Total Views: {comma(total_views)}
+      Jumlah Likes: {comma(total_likes)}"
+    )
+  )
+
+head(vids_favor2)
+```
+
+
+```{r}
+head(iris)
+```
+
+`clean_names`: untuk normalize nama kolom menjadi lowercase dan separatornya menjadi underscore
+
+```{r}
+library(janitor)
+
+iris <- iris %>% 
+  clean_names()
+
+iris
+```
+
+```{r}
+plot_iris <- iris %>%
+  mutate(label = glue("{species}
+    SP = {sepal_length}
+    PL = {petal_length}")) %>%
+  ggplot(aes(x = petal_length, y = sepal_length, text = label)) +
+  geom_point()
+
+plot_iris
+```
+
+```{r}
+
+ggplotly(plot_iris, tooltip = "text")
+```
+
+
+Pada aesthetic tambahkan parameter `text` dan isi dengan kolom `label`. Jika kita print object ggplot2, tidak ada perbedaan dengan plot sebelumnya. 
+
+```{r}
+plot2 <- ggplot(data = vids_favor2,
+                mapping = aes(
+                  y = reorder(category_id, total_views),
+                  x = total_views,
+                  text = label
+                )) +
+  geom_col(fill = "firebrick", alpha = 0.6) +
+  labs(
+    title = "Favorability index by category id",
+    x = NULL,
+    y = NULL
+  ) 
+
+plot2
+```
+
+mengatur `tooltip` di ggplotly:
+
+```{r}
+ggplotly(plot2, tooltip = "text")
+```
+
+# Macam-Macam tipe Visualisasi
+
+Jika kita bisa memilih cara yang baik untuk mengkomunikasikan konteks data, audiens akan mendapatkan wawasan yang ingin kita sampaikan.
+
+Pada bagian ini, akan membahas beberapa dasar konteks visualisasi:
+
+* Categorical ranking
+  + Bar chart
+  + lollipop chart
+* Distribusi Data
+  + Histogram
+  + Density Plot
+* Korelasi antar data
+  + Scatterplot
+  + Heatmap
+* Time base plot
+  + line chart
+  + area chart
+
+Kali ini data yang akan digunakan adalah data employee attrition:
+
+```{r}
+data_attrition <- read_csv(file = "data-input/data-attrition.csv")
+
+head(data_attrition)
+```
+
+```{r}
+glimpse(data_attrition)
+```
+
+
+## Categorical Ranking
+
+ategorical Ranking adalah salah satu cara paling dasar untuk mengomunikasikan bagaimana variabel kategorikal kita dapat menunjukkan perilaku yang berbeda antara levelnya dalam hal informasi numerik.
+
+**Studi Kasus:** Tampilkan informasi grafik frequensi tiap latar belakang pendidikan (education_field) di data `data_attrition`.
+
+```{r}
+# agregasi data
+
+data_agg <- data_attrition %>% 
+  group_by(education_field) %>% 
+  summarise(freq = n())
+  
+data_agg
+```
+
+
+```{r}
+# ggplot
+
+plot1 <- data_agg %>% 
+  ggplot(aes(x = freq, y = reorder(education_field, freq))) +
+  geom_col()
+
+plot1
+```
+
+```{r}
+# ggplotly
+
+ggplotly(plot1)
+```
+
+
+**mempercantik plot**
+
+1. replace underscore pada pendidikan levelnya dengan spasi (`str_replace_all`)
+2. ubah level pendidikannya dengan format kapital di huruf depan (`str_to_title`)
+
+```{r}
+str_replace_all(string = "human_resources", pattern = "_", replacement = " ") 
+```
+
+```{r}
+data_attrition %>%
+  mutate(
+    education_field = str_replace_all(
+      string = education_field,
+      pattern = "_",
+      replacement = " "
+    ),
+    education_field = str_to_title(education_field)
+  ) %>%
+  group_by(education_field) %>%
+  summarise(freq = n()) %>%
+  mutate(
+    percent = freq / sum(freq),
+    percent = percent * 100,
+    percent = round(percent, 1))
+```
+
+
+```{r}
+data_agg <- data_attrition %>%
+  mutate(
+    education_field = str_replace_all(
+      string = education_field,
+      pattern = "_",
+      replacement = " "
+    ),
+    education_field = str_to_title(education_field)
+  ) %>%
+  group_by(education_field) %>%
+  summarise(freq = n()) %>%
+  mutate(
+    percent = freq / sum(freq),
+    percent = round(percent * 100, 1),
+    label = glue("{freq} ({percent} %)"),
+    education_field = reorder(education_field, -freq)
+  )
+
+data_agg
+```
+
+
+
+```{r}
+plot_edu <- data_agg %>%
+  ggplot(mapping = aes(x = education_field, y = freq, text = label)) +
+  geom_col(aes(fill = freq), alpha = 0.8 , show.legend = FALSE) +
+  labs(title = "Number of employee by education fields",
+       x = NULL,
+       y = NULL) +
+  scale_fill_gradient(low = "grey", high = "firebrick")
+
+plot_edu
+```
+
+```{r}
+ggplotly(plot_edu, tooltip = "text")
+```
+
+## Distribution Plot
+
+1. histogram
+2. boxplot
+3. density
+
+Distribusi data adalah cara statistik untuk melihat bagaimana data numerik kita berdistribusi di dalam kumpulan data. Satu hal yang harus diperhatikan untuk visualisasi ini: hanya berfungsi untuk variabel numerik kontinu.
+
+**studi kasus:** Perusahaan ingin melihat, apakah ada perbedaan yang signifikan antara pendapatan bulanan pegawai terhadap status attrition untuk tiap department. Buatlah grafik distribusi `monthly_income` berdasarkan status `attrition` di setiap `department`
+
+
+Agregasi Data:
+
+1. Kolom yang dibutuhkan: departement, monthly_income, attrition
+2. Pada tahap ini tidak diperlukan `group_by` dan `summarise` karena konteks nya kita ingin mengetahui **distribusi** pendapatan seluruh pegawai sesuai status attrition dan asal department. 
+
+```{r}
+# agregasi dataaa
+
+data_agg <- data_attrition %>% 
+  select(department, monthly_income, attrition)
+
+data_agg
+```
+
+```{r}
+# ggplot
+
+data_agg %>% 
+  ggplot(aes(x = attrition, y = monthly_income)) +
+  geom_boxplot(aes(fill = department))
+```
+
+
+**mempercantik plot**
+
+```{r}
+data_agg_income <- data_attrition %>% 
+  select(department, attrition, monthly_income) %>% 
+  mutate(attrition = str_to_title(attrition),
+         department = str_replace_all(string = department,
+                                      pattern = "_",
+                                      replacement = " "),
+         department = str_to_title(department),
+         department = str_replace_all(string = department,
+                                      pattern = "Research Development",
+                                      replacement = "Reserach & Development"),
+         attrition = as.factor(attrition),
+         department = as.factor(department))
+
+head(data_agg_income)
+```
+
+```{r}
+plot_department <- ggplot(data = data_agg_income,
+                          mapping = aes(x = attrition,
+                                        y = monthly_income)) +
+  geom_boxplot(aes(fill = department),
+               alpha = 0.7) +
+  scale_fill_manual(values = c("dodgerblue4", "firebrick", "orange")) +
+  scale_y_continuous(labels = unit_format(
+    scale = 1e-3,
+    prefix = "$",
+    suffix = "K"
+  )) +
+  coord_flip() + 
+  facet_wrap(facets = ~department, ncol = 1) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(title = "Monthly Income Distribution",
+       x = NULL,
+       y = NULL)
+
+plot_department
+```
+
+```{r}
+ggplotly(plot_department)
+```
+
+# Flexdashboard
+
+Flex Dashboard adalah paket R yang “mudah membuat dasbor fleksibel, menarik, dan interaktif”. Pembuatan dan penyesuaian dasbor dilakukan menggunakan R Markdown dengan format output `flexdashboard::flex_dashboard`. 
+
+Buat dokumen R Markdown baru dari dalam RStudio, pilih "From Template" dan kemudian FlexDashboard.
+
+Template yang dihasilkan pada saat membuat file baru terdapat beberapa parameter default - misalnya kode untuk memilih _orientasi_ kolom dan mengatur tata letak layout `fill` seperti berikut:
+
+```
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+```
+
+
+Jika Anda ingin plot Anda diubah tingginya agar dapat mengisi halaman web secara vertikal, pengaturan `vertical_layout:fill` (default) harus dipertahankan. Jika Anda ingin bagan mempertahankan ukuran aslinya, ini memerlukan _page scrolling_ untuk memperlihtkan semua plot Anda. Itu bisa dilakukan dengan mengatur `vertical_layout` ke tata letak scrolling menggunakan parameter `scroll`.
+
+Di dalam setiap potongan kode dari kode template Rmd yang dibuat untuk Anda, Anda akan menemukan hal yang umum untuk memasukkan:
+- Output grafik R (`plot()`, `ggplot()`) 
+- Visualisasi data JavaScript interaktif berdasarkan htmlwidgets (`plotly`)
+- Data tabular (`table()`)
+- Data ringkasan umum, teks, score card, dll
+
+> Untuk demo, buka folder `flexdashboard`
+
+# Shiny
+
+_Shiny_ adalah packages dari RStudio, yang menyediakan framework aplikasi web untuk membuat aplikasi web interaktif (visualisasi) yang disebut “_Shiny apps_”. Kemudahan bekerja dengan Shiny telah mempopulerkannya di antara pengguna R. Aplikasi web ini menampilkan objek R dengan cantik (seperti plot, tabel, dll.) dan juga dapat di-_deploy_ untuk memungkinkan diakses oleh siapa saja.
+
+Shiny menyediakan widget yang memungkinkan untuk membangun aplikasi yang elegan dengan sedikit usaha.
+
+Struktur aplikasi _shiny_ dasar:
+
+```{r}
+knitr::include_graphics(path = "img/shiny architecture.png")
+```
+
+* global.R: Untuk menyiapkan lingkungan aplikasi, misalnya, library, impor data dan persiapan data..
+* ui.R: User Interface (UI) untuk menampilkan input dan output.
+* server.R: Untuk memproses input dari user dan mengubahnya menjadi output.
+
+Salah satu dari banyak library yang dapat kita gunakan adalah `shinydashboard`. Kita dapat menggunakan `shinydashboard` untuk membuat aplikasi dasbor bisnis.
+
+> buka folder `shiny` untuk kebutuhan demo pembuatan dashboard.

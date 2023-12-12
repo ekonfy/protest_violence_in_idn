@@ -1,0 +1,13 @@
+"0","ggplot(vids.agt,aes(x = like_ratio, dislike_ratio)) +"
+"0","  geom_point(aes(col = category_id)) +"
+"0","  geom_smooth(method = ""lm"") +"
+"0","  geom_point(data = vids.agt.out, color = ""black"") +"
+"0","  theme_minimal() +"
+"0","  labs(title = ""Relation between like ratio and dislike ratio"","
+"0","       subtitle = ""Youtube trending videos 2017"","
+"0","       x = ""like ratio"","
+"0","       y = ""dislike ratio"","
+"0","       col = ""Video Category"") +"
+"0","  theme(legend.position = ""bottom"")"
+"2","Error in fortify(data) : object 'vids.agt.out' not found
+"

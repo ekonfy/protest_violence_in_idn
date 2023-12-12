@@ -1,0 +1,4 @@
+"0","# base R"
+"0",""
+"0","dive6 <- head(vids[order(vids$views,decreasing = T),])"
+"0","dive6[,c(""title"",""views"")]"

@@ -1,0 +1,2 @@
+"0","vids.unik$like_ratio <- vids.unik$likes / vids.unik$views"
+"0","head(vids.unik)"

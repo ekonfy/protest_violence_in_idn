@@ -1,0 +1,5 @@
+"0","ggplot(trend_channel[1:20,], aes(x = Freq, reorder(Var1, Freq)))+"
+"0","  geom_col(aes(fill = Freq)) +"
+"0","  scale_fill_gradient(low = ""#300202"",high = ""#db0b0b"")+"
+"0","  geom_text(aes(label = Freq),color = ""white"", size = 3,nudge_x = -1)"
+"0",""
